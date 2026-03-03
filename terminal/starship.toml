@@ -1,0 +1,103 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[\
+┌──\
+${custom.username}\
+${custom.rootname}\
+$git_status\
+$git_branch\
+$git_commit\
+-$directory\
+$fill\
+\\[\
+$cmd_duration\
+$time\
+\\]\
+](color_gray)\
+$line_break\
+[└─](color_gray)\
+${custom.userchar}\
+${custom.rootchar} """
+
+# ===== Colors =====
+
+palette = 'mypalette'
+
+[palettes.mypalette]
+color_blue         = '#48a0f9'
+color_red          = '#fe635d'
+color_gray         = "#808080"
+color_gray_lighter = "#f5f5f5"
+color_yellow       = "#f7c155"
+
+# ===== Essentials =====
+
+# [username]
+# show_always = true
+# format      = '\([$user](color_blue)\)'
+
+[directory]
+style             = 'color_gray_lighter'
+format            = '\[[$path]($style)\]'
+truncation_length = 3
+truncation_symbol = '…/'
+
+[fill]
+style  = 'color_gray'
+symbol = '─'
+
+# ===== Times =====
+
+[cmd_duration]
+show_milliseconds = true
+min_time          = 1_000
+style             = 'color_yellow'
+format            = '[$duration]($style) '
+
+[time]
+disabled    = false
+style       = 'color_yellow'
+time_format = '%H:%M'
+format      = '[ $time]($style)'
+
+# ===== Git =====
+
+[git_status]
+deleted    = '#'
+up_to_date = 'V'
+style      = 'color_red'
+format     = '-\([$all_status$ahead_behind]($style)'
+
+[git_commit]
+style  = 'color_red'
+format = ' [$hash]($style)\)'
+
+[git_branch]
+only_attached = true
+style         = 'color_red'
+format        = ' [$branch]($style)\)'
+
+# ===== Custom Commands =====
+
+[custom.username]
+command = 'whoami'
+when    = 'test $(whoami) != "root"'
+style   = 'color_blue'
+format  = '\([$output]($style)\)'
+
+[custom.rootname]
+command = 'echo root'
+when    = 'test $(whoami) = "root"'
+style   = 'color_red'
+format  = '\([$output]($style)\)'
+
+[custom.userchar]
+when    = 'test $(whoami) != "root"'
+style   = 'color_blue'
+format  = '[\$]($style)'
+
+[custom.rootchar]
+when    = 'test $(whoami) = "root"'
+style   = 'color_red'
+format  = '[#]($style)'
